@@ -1,0 +1,28 @@
+name: Daily Subscription Reminders
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: cd reminder-bot && npm install
+        
+      - name: Run reminder check
+        run: cd reminder-bot && node index.js
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        continue-on-error: true
