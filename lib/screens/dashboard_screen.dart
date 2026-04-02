@@ -82,10 +82,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final currency = NumberFormat.currency(symbol: '\$');
-    final isDark = Theme.of(context).brightne
-ss == Brightness.dark;
-return
-Scaffold(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
       appBar: AppBar(
         title: const Text('SubKiller'),
         centerTitle: true,
@@ -118,10 +116,7 @@ Scaffold(
         if (spendingByCategory.isNotEmpty) ...[Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Text('Spending by Category', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800))), const SizedBox(height: 8), SizedBox(height: 80, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: spendingByCategory.length, itemBuilder: (context, index) {
           final category = spendingByCategory.keys.elementAt(index);
           final amount = spendingByCategory[category]!;
-          return Container(width: 120, margin: const EdgeInsets.only(right: 12), padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: getCategoryColor(category).withOpacity(0.15), borderRadius: BorderRadiu
-s
-.circular(12), border: Border.all(color: getCategoryColor(category).wit
-hOpacity(0.3))), child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [Text(category, style: TextStyle(fontSize: 12, color: getCategoryColor(category), fontWeight: FontWeight.w600), overflow: TextOverflow.ellipsis), const SizedBox(height: 4), Text(currency.format(amount), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold))]));
+          return Container(width: 120, margin: const EdgeInsets.only(right: 12), padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: getCategoryColor(category).withOpacity(0.15), borderRadius: BorderRadius.circular(12), border: Border.all(color: getCategoryColor(category).withOpacity(0.3))), child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [Text(category, style: TextStyle(fontSize: 12, color: getCategoryColor(category), fontWeight: FontWeight.w600), overflow: TextOverflow.ellipsis), const SizedBox(height: 4), Text(currency.format(amount), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold))]));
         })), const SizedBox(height: 16)],
         Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Upcoming Renewals', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), Text('${filteredSubscriptions.length} active', style: TextStyle(color: Colors.grey.shade600))])),
         const SizedBox(height: 8),

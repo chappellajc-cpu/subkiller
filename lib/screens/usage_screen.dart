@@ -32,9 +32,8 @@ class _UsageScreenState extends State<UsageScreen> {
     return Card(margin: const EdgeInsets.only(bottom: 12), child: Padding(padding: const EdgeInsets.all(16), child: Column(children: [Row(children: [CircleAvatar(backgroundColor: Colors.redAccent.withOpacity(0.1), child: Text(sub.name[0], style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold))), const SizedBox(width: 12), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(sub.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), Text(days == null ? 'Never used' : 'Last used $days days ago', style: TextStyle(color: days != null && days > 30 ? Colors.orange : Colors.grey))])), Text(currency.format(sub.amount), style: const TextStyle(fontWeight: FontWeight.bold))]), const SizedBox(height: 12), Row(children: [Expanded(child: OutlinedButton.icon(onPressed: () => _markUsed(sub), icon: const Icon(Icons.check_circle_outline), label: const Text('I Used It'))), const SizedBox(width: 8), Expanded(child: OutlinedButton.icon(onPressed: () => _cancelDialog(sub), icon: const Icon(Icons.cancel_outlined, color: Colors.red), label: const Text('Cancel', style: TextStyle(color: Colors.red)), style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.red))))])])));
   }
 
-  voi
-d _markUsed(Subscription sub) {
-final updated = Subscription(id: sub.id, name: sub.name, amount: sub.amount, billingCycle: sub.billingCycle, renewalDate: sub.renewalDate, category: sub.category, lastUsed: DateTime.now());
+  void _markUsed(Subscription sub) {
+    final updated = Subscription(id: sub.id, name: sub.name, amount: sub.amount, billingCycle: sub.billingCycle, renewalDate: sub.renewalDate, category: sub.category, lastUsed: DateTime.now());
     widget.onMarkUsed?.call(updated);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Marked ${sub.name} as used ✓')));
   }

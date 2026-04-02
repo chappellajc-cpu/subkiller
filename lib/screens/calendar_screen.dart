@@ -46,12 +46,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
   List<Subscription> _getRenewalsForDay(DateTime day) => widget.subscriptions.where((sub) { final next = _getNextRenewalDate(sub); return next.year == day.year && next.month == day.month && next.day == day.day; }).toList();
 
   DateTime _getNextRenewalDate(Subscription sub) {
-    var date = sub.renewalDat
-e;
+    var date = sub.renewalDate;
 
     while (date.isBefore(DateTime.now())) {
       switch (sub.billingCycle) {
-case 'yearly': date = DateTime(date.year + 1, date.month, date.day); break;
+        case 'yearly': date = DateTime(date.year + 1, date.month, date.day); break;
         case 'monthly': date = DateTime(date.year, date.month + 1, date.day); break;
         case 'weekly': date = date.add(const Duration(days: 7)); break;
       }
