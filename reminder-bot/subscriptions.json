@@ -1,0 +1,24 @@
+{
+  "subscriptions": [
+    {
+      "id": "1",
+      "name": "Netflix",
+      "amount": 15.99,
+      "billing_cycle": "monthly",
+      "renewal_date": "2026-04-07",
+      "category": "Entertainment",
+      "is_active": true,
+      "is_cancelled": false
+    },
+    {
+      "id": "2",
+      "name": "Spotify",
+      "amount": 10.99,
+      "billing_cycle": "monthly",
+      "renewal_date": "2026-04-14",
+      "category": "Music",
+      "is_active": true,
+      "is_cancelled": false
+    }
+  ]
+}
