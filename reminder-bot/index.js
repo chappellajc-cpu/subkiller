@@ -52,7 +52,7 @@ htmlContent += `</table><p style="font-size: 18px;"><strong>Total: $${total}</st
 async function sendEmail() {
   try {
     await axios.post('https://api.brevo.com/v3/smtp/email', {
-      sender: { name: 'SubKiller', email: 'noreply@subkiller.app' },
+      sender: { name: 'SubKiller', email: 'andrew@heyron.ai' },
       to: [{ email: emailTo }],
       subject: `🔔 SubKiller: ${upcoming.length} subscription(s) renewing!`,
       htmlContent: htmlContent
