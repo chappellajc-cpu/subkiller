@@ -16,7 +16,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.6' # Using a known stable Flutter version
+          flutter-version: '3.22.2' # <<< CORRECTED TO A RECENT FLUTTER VERSION
           channel: 'stable'
 
       - name: Clean project and cache
@@ -34,7 +34,7 @@ jobs:
         run: flutter build web --base-href /subkiller/
 
       - name: Upload artifact for GitHub Pages
-        uses: actions/upload-artifact@v4 # <<< CORRECTED TO v4
+        uses: actions/upload-artifact@v4 # Updated to v4 for artifact upload
         with:
           path: ./build/web
 
