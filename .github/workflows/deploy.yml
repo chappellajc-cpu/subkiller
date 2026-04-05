@@ -12,7 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        # We don't need 'ref' if we're pushing from main, checkout latest main
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -26,36 +25,13 @@ jobs:
       - name: Build Web App
         run: flutter build web --base-href /subkiller/
 
-      # This approach uses git commands directly for deployment
-      - name: Deploy to GitHub Pages
-        uses: actions/github-script@v6
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v1
         with:
-          script: |
-            const fs = require('fs');
-            const { execSync } = require('child_process');
+          path: ./build/web
 
-            // Navigate to the build directory
-            process.chdir('./build/web');
-            execSync('git init', { stdio: 'inherit' });
-            execSync('git config --global user.name "github-actions[bot]"', { stdio: 'inherit' });
-            execSync('git config --global user.email "github-actions[bot]@users.noreply.github.com"', { stdio: 'inherit' });
-
-            // Add all files
-            execSync('git add .', { stdio: 'inherit' });
-
-            // Commit files
-            const commitMessage = `Deploy to GitHub Pages via GitHub Actions: ${process.env.GITHUB_SHA}`;
-            execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
-
-            // Push to gh-pages branch
-            const remoteUrl = `https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
-            execSync(`git remote add origin ${remoteUrl}`, { stdio: 'inherit' });
-            execSync('git push origin HEAD:gh-pages --force', { stdio: 'inherit' });
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_SHA: ${{ github.sha }}
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
 
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Keep this for Node.js versioning
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
