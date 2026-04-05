@@ -1,35 +1,24 @@
-name: Deploy Web App to GitHub Pages
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4 # Updated to v4
 
-on:
-  push:
-    branches:
-      - main # Trigger deployment on pushes to the main branch
+  - name: Setup Flutter
+    uses: subosito/flutter-action@v2
+    with:
+      flutter-version: '3.22.0' # Updated to a specific recent version
+      channel: 'stable'
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+  - name: Get dependencies
+    run: flutter pub get
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4 # Checkout your repository code
+  - name: Build Web App
+    run: flutter build web --base-href /subkiller/
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2 # Action to set up Flutter environment
-        with:
-          flutter-version: '3.x.x' # Specify your Flutter version (adjust if needed)
-          channel: 'stable' # Use the stable channel
-
-      - name: Get dependencies
-        run: flutter pub get # Fetch project dependencies
-
-      - name: Build Web App
-        run: flutter build web --base-href /subkiller/ # Build the web application with the correct base href
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3 # Action to deploy to GitHub Pages
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub token provided by Actions
-          publish_dir: ./build/web # Directory containing the web build artifacts
-          publish_branch: gh-pages # Branch to deploy to
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+  - name: Deploy to GitHub Pages
+    uses: peaceiris/actions-gh-pages@v3 # Keeping v3 as it's stable and widely used, but checking for v4 compatibility
+    with:
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+      publish_dir: ./build/web
+      publish_branch: gh-pages
+      user_name: 'github-actions[bot]'
+      user_email: 'github-actions[bot]@users.noreply.github.com'
