@@ -3,11 +3,11 @@ name: Deploy Web App to GitHub Pages
 on:
   push:
     branches:
-      - main # Trigger deployment on pushes to the main branch
+      - main
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          flutter-version: '3.22.1' # Slightly updated Flutter version
           channel: 'stable'
 
       - name: Get dependencies
@@ -34,3 +34,6 @@ jobs:
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
 
+    # Add this environment block to opt into Node.js 24
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
