@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout specific commit
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: 3cf4529 # Using the commit hash we identified
+        # We don't need 'ref' if we're pushing from main, checkout latest main
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -21,25 +20,42 @@ jobs:
           flutter-version: '3.19.6'
           channel: 'stable'
 
-      - name: Flutter clean
-        run: flutter clean
-
       - name: Get dependencies
         run: flutter pub get
 
       - name: Build Web App
-        run: flutter build web --base-href /subkiller/ # Re-adding --base-href
+        run: flutter build web --base-href /subkiller/
 
+      # This approach uses git commands directly for deployment
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: actions/github-script@v6
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
-          publish_branch: gh-pages # Explicitly state publish branch
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          # Consider adding this if permissions are suspected
-          # force_orphan: true
+          script: |
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+
+            // Navigate to the build directory
+            process.chdir('./build/web');
+            execSync('git init', { stdio: 'inherit' });
+            execSync('git config --global user.name "github-actions[bot]"', { stdio: 'inherit' });
+            execSync('git config --global user.email "github-actions[bot]@users.noreply.github.com"', { stdio: 'inherit' });
+
+            // Add all files
+            execSync('git add .', { stdio: 'inherit' });
+
+            // Commit files
+            const commitMessage = `Deploy to GitHub Pages via GitHub Actions: ${process.env.GITHUB_SHA}`;
+            execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
+
+            // Push to gh-pages branch
+            const remoteUrl = `https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+            execSync(`git remote add origin ${remoteUrl}`, { stdio: 'inherit' });
+            execSync('git push origin HEAD:gh-pages --force', { stdio: 'inherit' });
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
 
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Keep this for Node.js versioning
