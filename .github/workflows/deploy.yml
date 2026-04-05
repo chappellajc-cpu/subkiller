@@ -1,24 +1,36 @@
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4 # Updated to v4
+name: Deploy Web App to GitHub Pages
 
-  - name: Setup Flutter
-    uses: subosito/flutter-action@v2
-    with:
-      flutter-version: '3.22.0' # Updated to a specific recent version
-      channel: 'stable'
+on:
+  push:
+    branches:
+      - main # Trigger deployment on pushes to the main branch
 
-  - name: Get dependencies
-    run: flutter pub get
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
 
-  - name: Build Web App
-    run: flutter build web --base-href /subkiller/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  - name: Deploy to GitHub Pages
-    uses: peaceiris/actions-gh-pages@v3 # Keeping v3 as it's stable and widely used, but checking for v4 compatibility
-    with:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
-      publish_dir: ./build/web
-      publish_branch: gh-pages
-      user_name: 'github-actions[bot]'
-      user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Web App
+        run: flutter build web --base-href /subkiller/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
