@@ -13,7 +13,7 @@ jobs:
       - name: Checkout specific commit
         uses: actions/checkout@v4
         with:
-          ref: 3cf4529 # <<< Using the commit hash that should contain the correct code
+          ref: 3cf4529 # Using the commit hash we identified
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -28,16 +28,18 @@ jobs:
         run: flutter pub get
 
       - name: Build Web App
-        run: flutter build web --base-href /subkiller/ # Re-adding base-href
+        run: flutter build web --base-href /subkiller/ # Re-adding --base-href
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
-          publish_branch: gh-pages
+          publish_branch: gh-pages # Explicitly state publish branch
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
+          # Consider adding this if permissions are suspected
+          # force_orphan: true
 
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
