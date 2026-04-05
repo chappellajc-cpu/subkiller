@@ -1,4 +1,3 @@
-
 name: Deploy Web App to GitHub Pages
 
 on:
@@ -11,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository specific commit
+      - name: Checkout specific commit
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: 3cf4529 # <<< Using the commit hash that should contain the correct code
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -22,11 +21,14 @@ jobs:
           flutter-version: '3.19.6'
           channel: 'stable'
 
+      - name: Flutter clean
+        run: flutter clean
+
       - name: Get dependencies
         run: flutter pub get
 
       - name: Build Web App
-        run: flutter build web --base-href /subkiller/
+        run: flutter build web --base-href /subkiller/ # Re-adding base-href
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -39,4 +41,3 @@ jobs:
 
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
