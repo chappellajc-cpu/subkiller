@@ -16,22 +16,22 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.6'
+          flutter-version: '3.19.6' # Using a known stable Flutter version
           channel: 'stable'
 
       - name: Get dependencies
         run: flutter pub get
 
       - name: Build Web App
-        run: flutter build web --base-href /subkiller/
+        run: flutter build web --base-href /subkiller/ # Ensure the build command is correct
 
       - name: Upload artifact for GitHub Pages
-        uses: actions/upload-artifact@v3 # <<< Corrected version
+        uses: actions/upload-artifact@v3 # Corrected to v3 as it's stable and not deprecated
         with:
-          path: ./build/web
+          path: ./build/web # Path to the web build output
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v1 # This action deploys the uploaded artifact
 
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
