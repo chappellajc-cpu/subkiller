@@ -1,3 +1,4 @@
+
 name: Deploy Web App to GitHub Pages
 
 on:
@@ -10,51 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout specific commit
+      - name: Checkout repository specific commit
         uses: actions/checkout@v4
         with:
-          ref: name: Deploy Web App to GitHub Pages
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout specific commit
-        uses: actions/checkout@v4
-        with:
-          ref: 827c8f3475367147ebbbb1a79f4bdc30ccba8eff
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.6'
-          channel: 'stable'
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Build Web App
-        run: flutter build web --base-href /subkiller/
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
-          publish_branch: gh-pages
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
-
+          fetch-depth: 0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
