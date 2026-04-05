@@ -155,7 +155,7 @@ static const Map<String, String> serviceDomains = {
     ];
   }
 
-  double get totalMonthly => filteredSubscriptions.fold(0, (sum, sub) => sum + sub.monthlyAm
+  double get totalMonthly => filteredSubscriptions.fold(0, (sum, sub) => sum + sub.monthlyAmount);
 ount);
   double get totalYearly => totalMonthly * 12;
 
