@@ -32,18 +32,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return _subscriptions.where((sub) {
       if (_searchQuery.isNotEmpty && !sub.name.toLowerCase().contains(_searchQuery.toLowerCase())) return false;
       if (_selectedCategories.isNotEmpty && !_selectedCategories.contains(sub.category)) return false;
-      if (_selectedBillingCycles.isNotEmpty && !_selectedBillingCycles.contains(sub.billingCycle)) return false;
+      if (_selectedBillingCycles.isNotEmpty
+&& !_
+selectedBillingCycles.contains(sub.billin
+gCycle)) return false;
       return true;
     }).toList();
   }
 
   static const Map<String, Color> categoryColors = {
-    'Entertainment': Colors.purple, 'Music': Colors.green, 'Productivity': Colors.blue,
-    'Cloud Storage': Colors.cyan, 'Gaming': Colors.red, 'News': Colors.orange,
-    'Fitness': Colors.teal, 'Shopping': Colors.pink, 'Health': Colors.green, 'Other': Colors.grey,
+    'Entertainment': Colors.purple,
+    'Music': Colors.green,
+    'Productivity': Colors.blue,
+    'Cloud Storage': Colors.cyan,
+    'Gaming': Colors.red,
+    'News': Colors.orange,
+    'Fitness': Colors.teal,
+    'Shopping': Colors.pink,
+    'Health': Colors.green,
+    'Other': Colors.grey,
   };
-
-  static const Map<String, String> serviceDomains = {
+static const Map<String, String> serviceDomains = {
     'netflix': 'netflix.com',
     'spotify': 'spotify.com',
     'amazon prime': 'amazon.com',
@@ -93,7 +102,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   static String? getServiceLogo(String name) {
     final key = name.toLowerCase().trim();
     String? domain;
-    
     if (serviceDomains.containsKey(key)) {
       domain = serviceDomains[key];
     } else {
@@ -104,10 +112,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
       }
     }
-    
     if (domain != null) {
       // Use Google's favicon service with direct URLs
-      return 'https://www.google.com/s2/favicons?domain=$domain&sz=64';
+      return '''https://www.google.com/s2/favicons?domain=$domain&sz=64''';
     }
     return null;
   }
@@ -148,11 +155,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ];
   }
 
-  double get totalMonthly => filteredSubscriptions.fold(0, (sum, sub) => sum + sub.monthlyAmount);
+  double get totalMonthly => filteredSubscriptions.fold(0, (sum, sub) => sum + sub.monthlyAm
+ount);
   double get totalYearly => totalMonthly * 12;
 
   void _showCategoryFilter() {
-    showModalBottomSheet(context: context, builder: (ctx) => Container(
+showModalBottomSheet(context: context, builder: (ctx) => Container(
       padding: const EdgeInsets.all(16),
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Text('Filter by Category', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -164,7 +172,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             if (selected) {
               _selectedCategories.add(c);
             } else {
-              _selectedCategories.remove(c);
+                _selectedCategories.remove(c);
             }
           }),
         )).toList()),
@@ -206,7 +214,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _showSubscriptionDetails(Subscription sub) {
     final currency = NumberFormat.currency(symbol: '\$');
-    showModalBottomSheet(context: context, isScrollControlled: true, builder: (ctx) => Container(
+showModalBottomSheet(context: context, isScrollControlled: true, builder: (ctx) => Container(
       padding: const EdgeInsets.all(24),
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -262,7 +270,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final logoUrl = getServiceLogo(name);
     final avatarSize = isMobile ? 36.0 : 44.0;
     final fontSize = isMobile ? 14.0 : 16.0;
-    
     if (logoUrl != null) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(8),
@@ -295,8 +302,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  void _confirmDelete(Subscription sub) {
-    showDialog(context: context, builder: (ctx) => AlertDialog(
+  void _confirm
+Delete(Subscription sub) {
+showDialog(context: context, builder: (ctx) => AlertDialog(
       title: const Text('Delete Subscription?'),
       content: Text('Are you sure you want to delete ${sub.name}?'),
       actions: [
@@ -319,8 +327,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
-    
-    return Scaffold(
+return
+Scaffold(
       appBar: AppBar(
         title: const Text('SubKiller'),
         centerTitle: true,
@@ -348,7 +356,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               decoration: InputDecoration(
                 hintText: 'Search...',
                 prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchQuery.isNotEmpty ? IconButton(icon: const Icon(Icons.clear), onPressed: () => setState(() => _searchQuery = '')) : null,
+                suffixIcon: _searchQuery.isNotEmpty ? IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      _searchQuery = '';
+                    });
+                  },
+                ) : null,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 filled: true,
                 fillColor: isDark ? Colors.grey.shade800 : Colors.grey.shade100,
@@ -374,7 +389,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Text('${currency.format(totalYearly)} / year', style: const TextStyle(color: Colors.white70)),
             ])),
             if (spendingByCategory.isNotEmpty) ...[
-              Padding(padding: EdgeInsets.symmetric(horizontal: isMobile ? 12 : 16), child: Text('Spending by Category', style: TextStyle(fontSize: isMobile ? 14 : 16, fontWeight: FontWeight.bold))),
+              Padding(padding: EdgeInsets.symmetric(horizontal: isMobile ? 12 : 16), child: Text('Spending by Category', style
+: TextStyle(fontSize: isMobile ? 14 : 1
+6, fontWeight: FontWeight.bold))),
               const SizedBox(height: 8),
               SizedBox(height: isMobile ? 70 : 80, child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -418,7 +435,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Text('${filteredSubscriptions.length}', style: TextStyle(color: Colors.grey.shade600)),
             ])),
             const SizedBox(height: 8),
-            Expanded(child: filteredSubscriptions.isEmpty 
+Expanded(child: filteredSubscriptions.isEmpty 
               ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Icon(Icons.search_off, size: isMobile ? 48 : 64, color: Colors.grey.shade400),
                   const SizedBox(height: 16),
