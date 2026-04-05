@@ -12,26 +12,43 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        # No ref needed here, we're ensuring the latest main is pulled.
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.6' # Using a known stable Flutter version
+          # Using a specific, stable Flutter version
+          flutter-version: '3.19.6'
           channel: 'stable'
 
-      - name: Get dependencies
-        run: flutter pub get
+      - name: Clean Flutter build artifacts and dependencies
+        run: |
+          flutter clean
+          flutter pub cache clean # Aggressively clean the pub cache
+          flutter pub get
 
       - name: Build Web App
-        run: flutter build web --base-href /subkiller/ # Ensure the build command is correct
+        run: flutter build web --base-href /subkiller/ # Ensure we're building correctly
 
-      - name: Upload artifact for GitHub Pages
-        uses: actions/upload-artifact@v3 # Corrected to v3 as it's stable and not deprecated
-        with:
-          path: ./build/web # Path to the web build output
+      # Capture detailed build output
+      - name: Capture build output
+        if: steps.build-web.outcome == 'failure'
+        run: |
+          echo "Build failed. Attempting to capture logs..."
+          # Placeholder for log capturing if needed - usually logs are visible in Actions UI
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1 # This action deploys the uploaded artifact
+      # The deployment step will depend on the build success.
+      # For now, let's focus on making the build itself work.
+      # If build succeeds, we'd re-introduce upload/deploy.
+
+      # Temporarily disabling deployment steps to focus on build success
+      # - name: Upload artifact for GitHub Pages
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     path: ./build/web
+
+      # - name: Deploy to GitHub Pages
+      #   uses: actions/deploy-pages@v1
 
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Opt into Node.js 24
