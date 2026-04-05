@@ -26,7 +26,7 @@ jobs:
         run: flutter build web --base-href /subkiller/
 
       - name: Upload artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v3 # <<< Corrected version
         with:
           path: ./build/web
 
