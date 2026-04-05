@@ -13,33 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2' # <<< CORRECTED TO A RECENT FLUTTER VERSION
+          flutter-version: '3.22.2' # Using a recent stable version that should support Dart 3.5+
           channel: 'stable'
+          # Optional: Cache Flutter SDK to speed up subsequent runs
+          cache: true
 
       - name: Clean project and cache
         run: |
           flutter clean || true
-          flutter pub cache clean
-          rm -rf .dart_tool || true
-          rm -rf .pub-cache || true
-          rm -rf build || true
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Build Web App
-        run: flutter build web --base-href /subkiller/
-
-      - name: Upload artifact for GitHub Pages
-        uses: actions/upload-artifact@v4 # Updated to v4 for artifact upload
-        with:
-          path: ./build/web
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
-
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+          flutter pub
