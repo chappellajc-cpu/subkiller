@@ -16,14 +16,18 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.1' # Slightly updated Flutter version
+          flutter-version: '3.19.6' # Trying a slightly older, stable version
           channel: 'stable'
 
       - name: Get dependencies
         run: flutter pub get
 
+      # Add Flutter Doctor for detailed environment analysis
+      - name: Flutter Doctor
+        run: flutter doctor -v
+
       - name: Build Web App
-        run: flutter build web --base-href /subkiller/
+        run: flutter build web # Temporarily removing --base-href for diagnostic purposes
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -34,6 +38,5 @@ jobs:
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
 
-    # Add this environment block to opt into Node.js 24
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
