@@ -3,25 +3,39 @@ name: Deploy Web App to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main # This workflow runs on pushes to the main branch
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Specifies the runner environment
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # Checks out your repository code
 
       - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2' # Using a recent stable version that should support Dart 3.5+
+          flutter-version: '3.22.2' # Use a compatible Flutter version
           channel: 'stable'
-          # Optional: Cache Flutter SDK to speed up subsequent runs
-          cache: true
+          cache: true # Caches the Flutter SDK to speed up builds
 
-      - name: Clean project and cache
-        run: |
-          flutter clean || true
-          flutter pub
+      - name: Get dependencies
+        run: flutter pub get # Installs project dependencies
+
+      - name: Build Web App
+        run: flutter build web --base-href /subkiller/ # Builds the Flutter web app
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+          publish_dir: ./build/web # Directory containing the built web app
+          publish_branch: gh-pages # Branch to deploy to
+          user_name: 'github-actions[bot]' # Committer name
+          user_email: 'github-actions[bot]@users.noreply.github.com' # Committer email
+
+    env:
+      # Use Node.js version 24 as recommended by deprecation warnings
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
