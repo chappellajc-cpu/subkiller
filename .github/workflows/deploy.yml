@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest # Specifies the runner environment
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository # Force re-run
         uses: actions/checkout@v4 # Checks out your repository code
 
       - name: Setup Flutter SDK
