@@ -21,7 +21,9 @@ jobs:
           cache: true # Caches the Flutter SDK to speed up builds
 
       - name: Get dependencies
-        run: flutter pub get # Installs project dependencies
+        run: |
+          flutter clean
+          flutter pub get # Installs project dependencies
 
       - name: Build Web App
         run: flutter build web --base-href /subkiller/ # Builds the Flutter web app
