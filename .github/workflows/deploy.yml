@@ -6,7 +6,7 @@ on:
       - main # This workflow runs on pushes to the main branch
 
 jobs:
-  build-and-deploy:
+  build-and-deploy: # Check for changes
     runs-on: ubuntu-latest # Specifies the runner environment
 
     steps:
